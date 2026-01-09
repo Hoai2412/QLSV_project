@@ -8,6 +8,27 @@
     <div class="history-header">
       <h1 id="title" class="history-title">Lịch sử sửa điểm</h1>
       <a class="btn-back" href="/admin/diem" onclick="event.preventDefault(); history.back();">← Quay lại</a>
+      <!-- FILTER BAR (giống quản lý đăng ký học phần) -->
+            <div class="history-searchbar">
+            <input id="his-keyword" type="text" placeholder="Nhập nội dung cần tìm..." />
+
+            <select id="his-field">
+                <option value="msv">Tìm theo MSV</option>
+                <option value="hoten">Tìm theo họ tên</option>
+                <option value="nguoisua">Tìm theo người sửa</option>
+                <option value="noidung">Tìm theo nội dung</option>
+            </select>
+
+            <button id="btn-his-search" type="button">
+                <i class="fa-solid fa-magnifying-glass"></i> Tìm
+            </button>
+
+            <button id="btn-his-clear" type="button" class="btn-clear">
+                Xóa
+            </button>
+            </div>
+
+
     </div>
 
     <table class="table">
