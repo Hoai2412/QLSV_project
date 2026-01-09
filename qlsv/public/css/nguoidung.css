@@ -1,0 +1,87 @@
+/* Search row */
+.filter-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.input-control {
+    border: 1px solid #bdbdbd;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.btn-search { background: #0b3b92; }
+.btn-refresh { background: #0b3b92; }
+.btn-add { background: #0b3b92; }
+
+.btn:hover { opacity: 0.9; }
+
+/* Table */
+.table-user {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-user th {
+    background: #0d47a1;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.table-user td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.user-add-container {
+    padding: 20px 25px;
+}
+
+.form-box {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px #d0d0d0;
+    width: 65%;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-row label {
+    width: 180px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.form-row .input-control {
+    width: 350px;
+}
+
+.file-display {
+    background: #f3f3f3;
+}
+
+.buttons-row {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+}
+

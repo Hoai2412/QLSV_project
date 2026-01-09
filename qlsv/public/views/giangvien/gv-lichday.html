@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lịch Giảng Dạy | Lecturer Portal</title>
+
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+   
+  <style>
+    /* --- LECTURER THEME SYSTEM (Đồng bộ) --- */
+    :root {
+        --lec-primary: #1e3a8a;       /* Xanh Navy đậm */
+        --lec-primary-light: #3b82f6; /* Xanh Dương sáng */
+        --lec-sidebar-bg: #0f172a;    /* Nền Sidebar tối */
+        --lec-text-main: #1e293b;     /* Chữ chính */
+        --lec-text-sub: #64748b;      /* Chữ phụ */
+        --lec-bg: #f1f5f9;            /* Nền App */
+        --lec-border: #cbd5e1;        /* Viền */
+        --white: #ffffff;
+    }
+
+    /* --- RESET & BASE --- */
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        background-color: var(--lec-bg);
+        color: var(--lec-text-main);
+        font-size: 14px;
+        line-height: 1.5;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* --- LAYOUT --- */
+    .app-container { display: flex; height: 100vh; }
+
+    /* --- SIDEBAR --- */
+    .sidebar {
+        width: 260px;
+        background-color: var(--lec-sidebar-bg);
+        color: #94a3b8;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+    }
+
+    .brand {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        color: #fff;
+        font-weight: 700;
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .brand i { margin-right: 10px; color: #f59e0b; font-size: 1.2rem; }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 20px 0;
+        margin: 0;
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .sidebar-menu li a {
+        display: flex;
+        align-items: center;
+        padding: 12px 24px;
+        color: #94a3b8;
+        text-decoration: none;
+        transition: 0.2s;
+        border-left: 3px solid transparent;
+        font-weight: 500;
+    }
+
+    .sidebar-menu li a:hover {
+        background-color: rgba(255,255,255,0.05);
+        color: #e2e8f0;
+    }
+
+    .sidebar-menu li a.active {
+        background-color: #1e293b;
+        color: #fff;
+        border-left-color: var(--lec-primary-light);
+    }
+    .sidebar-menu li a i { width: 24px; margin-right: 10px; text-align: center; }
+
+    /* --- BODY WRAPPER --- */
+    .body-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    /* --- HEADER --- */
+    .main-header {
+        height: 64px;
+        background: var(--white);
+        border-bottom: 1px solid var(--lec-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .header-left .breadcrumb { font-size: 0.9rem; color: var(--lec-text-sub); }
+    .breadcrumb a { text-decoration: none; color: var(--lec-text-sub); }
+    .breadcrumb i { margin: 0 8px; font-size: 0.8rem; }
+    .breadcrumb span { color: var(--lec-primary); font-weight: 600; }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-weight: 500;
+        color: var(--lec-text-main);
+    }
+
+    .btn-logout {
+        padding: 6px 12px;
+        border: 1px solid #fee2e2;
+        background: #fff;
+        color: #ef4444;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: 0.2s;
+    }
+    .btn-logout:hover { background: #fee2e2; }
+
+    /* --- MAIN CONTENT --- */
+    .main-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+        background-color: #f8fafc;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--lec-primary);
+        margin: 0 0 20px 0;
+    }
+
+    /* --- FILTER BAR STYLE --- */
+    .filter-bar {
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px -1px rgba(0,0,0,0.05);
+        border: 1px solid var(--lec-border);
+        padding: 20px;
+        margin-bottom: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: flex-end;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .filter-group label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--lec-text-sub);
+    }
+
+    .form-control {
+        padding: 8px 12px;
+        border: 1px solid var(--lec-border);
+        border-radius: 6px;
+        background-color: #fff;
+        color: var(--lec-text-main);
+        font-size: 0.9rem;
+        min-width: 200px;
+        outline: none;
+        transition: border 0.2s;
+    }
+    .form-control:focus {
+        border-color: var(--lec-primary-light);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .btn-search {
+        padding: 8px 16px;
+        background-color: var(--lec-primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        height: 38px; /* Khớp với chiều cao input */
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .btn-search:hover { background-color: #1e40af; }
+
+    /* --- TABLE STYLE --- */
+    .table-container {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid var(--lec-border);
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .data-table thead th {
+        background: #f1f5f9;
+        color: var(--lec-text-sub);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        padding: 14px 16px;
+        text-align: left;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    .data-table tbody td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f1f5f9;
+        color: var(--lec-text-main);
+        vertical-align: middle;
+    }
+    .data-table tbody tr:hover { background-color: #f8fafc; }
+
+    /* Màu cho cột Thứ để dễ nhìn hơn */
+    .data-table tbody td:first-child {
+        font-weight: 600;
+        color: var(--lec-primary);
+        background-color: #f8fafc;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+        <div class="brand"><i class="fas fa-chalkboard-teacher"></i> GIẢNG VIÊN</div>
+        <ul class="sidebar-menu">
+            <li><a href="/giangvien"><i class="fas fa-home"></i> Trang chủ</a></li>
+            <li><a href="/giangvien/lophocphan"><i class="fas fa-layer-group"></i> Lớp học phần</a></li>
+            <!-- Active class cho trang hiện tại -->
+            <li><a class="active" href="/giangvien/lichday"><i class="fas fa-calendar-alt"></i> Lịch giảng dạy</a></li>
+            <li><a href="/giangvien/nhatky"><i class="fas fa-history"></i> Nhật ký điểm</a></li>
+        </ul>
+    </nav>
+
+    <div class="body-wrapper">
+
+        <!-- HEADER -->
+        <header class="main-header">
+            <div class="header-left">
+                <div class="breadcrumb">
+                    <a href="/giangvien">Trang chủ</a>
+                    <i class="fa-solid fa-chevron-right"></i>
+                    <span>Lịch giảng dạy</span>
+                </div>
+            </div>
+
+            <div class="user-info">
+                <div style="text-align: right; line-height: 1.2;">
+                    <div style="font-size: 0.8rem; color: #64748b;">Xin chào</div>
+                    <span id="header-gv-name" style="font-size: 1rem;">Giảng viên</span>
+                </div>
+                <div style="width: 36px; height: 36px; background: #e0e7ff; color: #1e3a8a; border-radius: 50%; display: grid; place-items: center; font-weight: bold;">GV</div>
+                <button class="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <h2 class="page-title">Tra cứu Lịch giảng dạy</h2>
+
+            <!-- FILTER SECTION -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Năm học:</label>
+                    <!-- Giữ nguyên ID -->
+                    <select id="lich-hocky" class="form-control">
+                        <option value="">-- Tất cả --</option>
+                        <option value="2021HK01">2021</option>
+                        <option value="2021HK02">2022</option>
+                        <option value="2022HK01">2023</option>
+                        <option value="2022HK02">2024</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Học kỳ:</label>
+                    <!-- Lưu ý: Code gốc bạn gửi có 2 element cùng ID lich-hocky, tôi giữ nguyên để tránh lỗi JS -->
+                    <select id="lich-hocky" class="form-control">
+                        <option value="">-- Tất cả --</option>
+                        <option value="2021HK01">HK01</option>
+                        <option value="2021HK02">HK02</option>
+                        <option value="2022HK01">HK03</option>                 
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Ngày trong tuần:</label>
+                    <!-- Giữ nguyên ID -->
+                    <select id="lich-thu" class="form-control">
+                        <option value="">-- Tất cả --</option>
+                        <option value="2">Thứ 2</option>
+                        <option value="3">Thứ 3</option>
+                        <option value="4">Thứ 4</option>
+                        <option value="5">Thứ 5</option>
+                        <option value="6">Thứ 6</option>
+                        <option value="7">Thứ 7</option>
+                    </select>
+                </div>
+
+                <button class="btn-search">
+                    <i class="fas fa-filter"></i> Lọc dữ liệu
+                </button>
+            </div>
+
+            <!-- SCHEDULE TABLE -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">Thứ</th>
+                            <th style="width: 100px;">Tiết</th>
+                            <th>Mã Lớp HP</th>
+                            <th>Tên Môn Học</th>
+                            <th>Phòng học</th>              
+                        </tr>
+                    </thead>
+                    <tbody id="lich-table">
+                        <!-- Dữ liệu JS sẽ load vào đây -->
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding: 40px; color: var(--lec-text-sub);">
+                                <i class="fas fa-spinner fa-spin"></i> Đang tải dữ liệu lịch dạy...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<!-- Script giữ nguyên -->
+<script src="../../js/gv.js"></script>
+</body>
+</html>

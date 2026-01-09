@@ -1,0 +1,47 @@
+qlsv/
+├── package.json
+├── server.js
+│
+├── config/
+│   └── db.js
+│
+├── routes/
+│   ├── authRoutes.js
+│   ├── studentRoutes.js
+│   └── giangvienRoutes.js
+│
+├── controllers/
+│   ├── authController.js
+│   ├── studentController.js
+│   └── giangvienController.js
+│
+├── middleware/
+│   └── authGV.js
+│
+├── database/
+│   └── seed.js
+│
+├── public/
+│   
+│   ├── login.html
+│   │
+│   ├── css/
+│   │   └── main.css
+│   │
+│   ├── js/
+│   │   ├── app.js   (JS dành cho sinh viên)
+│   │   └── gv.js    (JS dành cho giảng viên)
+│   │
+│   └── views/
+│       ├── dashboard.html     (SV)
+│       ├── register.html      (SV)
+│       ├── schedule.html      (SV)
+│       ├── grades.html        (SV)
+│       │
+│       └── giangvien/
+│           ├── gv-dashboard.html
+│           ├── gv-lophocphan.html
+│           ├── gv-lophocphan-detail.html
+│           ├── gv-nhapdiem.html
+│           ├── gv-nhatky-diem.html
+│           └── gv-lichday.html

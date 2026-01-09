@@ -1,0 +1,92 @@
+<div class="lichthi-container">
+
+    <h2 class="title">
+        <i class="fa fa-calendar-days"></i> QUẢN LÝ LỊCH THI
+    </h2>
+
+    <!-- FORM NHẬP THÔNG TIN -->
+    <div class="form-grid">
+
+        <!-- HỌC KỲ -->
+        <div class="form-group">
+            <label>Học kỳ:</label>
+            <select id="hocky" class="input-control">
+                <option value="2024HK01">2024HK01</option>
+                <option value="2024HK02">2024HK02</option>
+                <option value="2025HK01">2025HK01</option>
+                <option value="2025HK02">2025HK02</option>
+            </select>
+        </div>
+
+        <!-- NGÀY THI -->
+        <div class="form-group">
+            <label>Ngày thi:</label>
+            <input id="ngaythi" type="date" class="input-control">
+        </div>
+
+        <!-- MÔN THI -->
+        <div class="form-group">
+            <label>Môn thi:</label>
+            <input id="monthi" type="text" class="input-control" placeholder="Nhập môn thi">
+        </div>
+
+        <!-- PHÒNG THI -->
+        <div class="form-group">
+            <label>Phòng thi:</label>
+            <input id="phongthi" type="text" class="input-control" placeholder="Nhập phòng thi">
+        </div>
+
+        <!-- CA THI (ComboBox) -->
+        <div class="form-group">
+            <label>Ca thi (Tiết):</label>
+            <select id="cathi" class="input-control">
+                <option value="1-2">Tiết 1 – 2</option>
+                <option value="3-5">Tiết 3 – 5</option>
+                <option value="6-7">Tiết 6 – 7</option>
+                <option value="8-10">Tiết 8 – 10</option>
+            </select>
+        </div>
+
+        <!-- KHOA -->
+        <div class="form-group">
+            <label>Khoa:</label>
+            <select id="khoa" class="input-control">
+                <option value="">-- Chọn khoa --</option>
+            </select>
+        </div>
+
+        <!-- GIÁM THỊ -->
+        <div class="form-group">
+            <label>Giám thị:</label>
+            <select id="giamthi" class="input-control">
+                <option value="">-- Chọn giám thị --</option>
+            </select>
+        </div>
+
+    </div>
+<div class="btn-group">
+        <button id="btnAdd" class="btn btn-add">Thêm</button>
+        <button id="btnUpdate" class="btn btn-update">Sửa</button>
+        <button id="btnDelete" class="btn btn-delete">Xóa</button>
+    </div>
+    <!-- BẢNG LỊCH THI -->
+ <div class="table-wrapper">
+    <table class="table-lichthi">
+    <thead>
+        <tr>
+            <th>Mã LT</th>
+            <th>Học kỳ</th>
+            <th>Môn thi</th>
+            <th>Ngày thi</th>
+            <th>Phòng</th>
+            <th>Ca thi</th>
+            <th>Giám thị</th>
+        </tr>
+    </thead>
+    <tbody id="lichthi-data"></tbody>
+</table>
+</div>
+
+
+</div>
+

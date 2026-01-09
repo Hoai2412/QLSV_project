@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập hệ thống - QLSV</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="login-body">
+    <div class="login-box">
+        <div class="logo">
+            <i class="fas fa-university fa-3x" style="color:#005a9c;"></i>
+        </div>
+
+        <h2 style="color:#005a9c;margin-bottom:20px;">CỔNG THÔNG TIN ĐÀO TẠO</h2>
+
+        <!-- Form đăng nhập -->
+        <form id="loginForm">
+
+            <!-- Dropdown chọn vai trò -->
+            <div class="form-group">
+                <select id="role" class="form-control" style="margin-bottom: 12px;">
+                    <option value="SinhVien">Sinh viên</option>
+                    <option value="GiangVien">Giảng viên</option>
+                    <option value="Admin">Quản trị viên</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="username" 
+                    name="username"
+                    placeholder="Mã sinh viên / Tên đăng nhập" 
+                    required>
+            </div>
+
+            <div class="form-group">
+                <input 
+                    type="password" 
+                    class="form-control" 
+                    id="password" 
+                    name="password"
+                    placeholder="Mật khẩu" 
+                    required>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%;">ĐĂNG NHẬP</button>
+
+            <div style="margin-top:15px;font-size:13px;">
+                <a href="#">Quên mật khẩu?</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
