@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chương trình đào tạo | Student Portal</title>
+
+  <!-- ICON + FONT -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- LAYOUT CHUNG -->
+  <link rel="stylesheet" href="../css/layout.css" />
+
+  <!-- CSS RIÊNG TRANG CHƯƠNG TRÌNH ĐÀO TẠO -->
+  <style>
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: #f6f9fc;
+    }
+
+    .page-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    /* ===== CONTAINER CHÍNH ===== */
+    #curriculum-container {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ===== SEMESTER CARD ===== */
+    .semester-block {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.04);
+      overflow: hidden;
+    }
+
+    .semester-header {
+      background: #f0f9ff;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .semester-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0b3d91;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .semester-title i {
+      color: #0ea5e9;
+    }
+
+    .semester-credits {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #0b3d91;
+      font-size: 0.9rem;
+    }
+
+    /* ===== TABLE TRONG CARD ===== */
+    .curriculum-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .curriculum-table th {
+      background: #ffffff;
+      padding: 12px 18px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: #64748b;
+      border-bottom: 1px solid var(--border-color);
+      text-align: left;
+    }
+
+    .curriculum-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.95rem;
+    }
+
+    .curriculum-table tr:hover {
+      background: #f8fafc;
+    }
+
+    /* ===== BADGE ===== */
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .badge-required {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .badge-elective {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    /* ===== LOADING ===== */
+    .loading {
+      padding: 40px;
+      text-align: center;
+      color: #64748b;
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <div id="sidebar"></div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- HEADER -->
+    <div id="header"></div>
+
+    <!-- CONTENT -->
+    <main class="content" role="main">
+      <div class="container">
+
+        <h2 class="page-title">Chương trình đào tạo</h2>
+
+        <!-- JS SẼ RENDER TOÀN BỘ CTĐT Ở ĐÂY -->
+        <div id="curriculum-container">
+          <div class="loading">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Đang tải chương trình đào tạo...
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- COMPONENTS -->
+<script src="../js/components.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

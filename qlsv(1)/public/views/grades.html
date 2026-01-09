@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kết quả học tập | Student Portal</title>
+
+  <!-- ICON + FONT -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- LAYOUT -->
+  <link rel="stylesheet" href="../css/layout.css" />
+
+  <style>
+    .page-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .table-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .data-table th {
+      background: #f8f9fa;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--primary-color);
+    }
+
+    .data-table tbody tr:hover {
+      background: #f4f9ff;
+    }
+
+    /* Highlight điểm */
+    .data-table td:nth-child(6),
+    .data-table td:nth-child(7),
+    .data-table th:nth-child(6),
+    .data-table th:nth-child(7) {
+      text-align: center;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .table-loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div id="sidebar"></div>
+
+    <div class="main">
+      <div id="header"></div>
+
+      <main class="content">
+        <div class="container">
+
+          <h2 class="page-title">Kết quả học tập</h2>
+
+          <section class="table-card">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Mã LHP</th>
+                  <th>Môn học</th>
+                  <th>Số TC</th>
+                  <th>Điểm QT</th>
+                  <th>Điểm CK</th>
+                  <th>TK(10)</th>
+                  <th>Chữ</th>
+                </tr>
+              </thead>
+              <tbody id="grades-body">
+                <tr>
+                  <td colspan="7" class="table-loading">
+                    <i class="fa-solid fa-spinner fa-spin"></i><br />
+                    Đang tải bảng điểm...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/components.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>

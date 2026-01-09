@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả học tập</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+<div class="app-container">
+    <header class="main-header">
+        <div class="brand"><i class="fas fa-graduation-cap"></i> TRƯỜNG ĐẠI HỌC ABC</div>
+        <div class="user-info">
+            Xin chào: <span id="header-student-name">Sinh viên</span>
+            <button class="btn-logout">Đăng xuất</button>
+        </div>
+    </header>
+
+    <div class="body-wrapper">
+        <nav class="sidebar">
+            <ul class="sidebar-menu">
+            <li><a href="/student"><i class="fas fa-home"></i> Trang chủ</a></li>
+            <li><a href="/student/register"><i class="fas fa-edit"></i> Đăng ký học phần</a></li>
+            <!-- <li><a href="/student/history"><i class="fas fa-list"></i> Lịch sử đăng kí học phần</a></li> -->
+            <li><a href="/student/curriculum"><i class="fas fa-calendar-alt"></i> Chương trình đào tạo</a></li>
+              <li>
+                    <a href="/student/course-search" class="active">
+                        <i class="fas fa-search"></i> Tra cứu học phần
+                    </a>
+                </li>
+            <li><a href="/student/grades" class="active"><i class="fas fa-chart-bar"></i> Kết quả học tập</a></li>
+            <li><a href="/student/schedule"><i class="fas fa-calendar-alt"></i> Thời khóa biểu</a></li>
+            <li><a href="/student/exam-schedule" class="active">
+                    <i class="fas fa-calendar-check"></i> Lịch thi
+                </a></li>
+        </ul>
+
+        </nav>
+
+        <main class="main-content">
+            <h2 class="page-title">KẾT QUẢ HỌC TẬP</h2>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Mã LHP</th>
+                            <th>Môn học</th>
+                            <th>Số TC</th>
+                            <th>Điểm QT</th>
+                            <th>Điểm CK</th>
+                            <th>TK(10)</th>
+                            <th>Chữ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="grades-body"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="../js/app.js"></script>
+</body>
+</html>

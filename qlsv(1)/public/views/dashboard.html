@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hồ sơ sinh viên | Student Portal</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+   
+  <link rel="stylesheet" href="../css/layout.css" />
+
+  <style>
+    /* --- OVERRIDE & CUSTOM STYLES FOR PROFILE PAGE --- */
+    :root {
+        --primary-color: #0ea5e9; /* Sky 500 */
+        --primary-dark: #0284c7;  /* Sky 600 */
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --bg-subtle: #f8fafc;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif; /* Font hiện đại hơn */
+    }
+
+    /* Tinh chỉnh Hero Section */
+    .hero-title {
+        font-size: 1.75rem;
+        color: var(--text-main);
+        letter-spacing: -0.025em;
+    }
+    
+    .btn-primary-soft {
+        background-color: #e0f2fe;
+        color: #0284c7;
+        border: 1px solid transparent;
+        transition: all 0.2s ease;
+    }
+    .btn-primary-soft:hover {
+        background-color: #bae6fd;
+        transform: translateY(-1px);
+    }
+
+    /* Card Styling Nâng cao */
+    .card-student {
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-header {
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 16px;
+        margin-bottom: 0; /* Override */
+    }
+
+    /* Avatar Section */
+    .student-avatar {
+        position: relative;
+    }
+    .avatar-wrap {
+        width: 130px;
+        height: 130px;
+        margin: 0 auto;
+    }
+    .avatar-circle {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        border: 4px solid #fff;
+        box-shadow: 0 0 0 1px #e2e8f0, 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        color: #38bdf8;
+        font-size: 3rem;
+    }
+    .avatar-camera {
+        width: 38px;
+        height: 38px;
+        background: var(--text-main);
+        color: #fff;
+        border: 3px solid #fff;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .avatar-camera:hover {
+        background: var(--primary-color);
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    /* Phân chia khu vực thông tin */
+    .section-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #94a3b8;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .section-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #f1f5f9;
+    }
+
+    /* Info Grid Styling */
+    .info-group-readonly {
+        background-color: #f8fafc; /* Nền xám nhẹ cho phần không sửa được */
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #f1f5f9;
+        margin-bottom: 24px;
+    }
+    
+    .info-group-editable {
+        padding: 10px 20px;
+    }
+
+    .info-item {
+        margin-bottom: 0; /* Reset margin cũ */
+    }
+    
+    .info-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 4px;
+    }
+    
+    .info-value {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #334155;
+        line-height: 1.5;
+    }
+    .info-value.highlight {
+        color: var(--text-main);
+        font-weight: 700;
+    }
+
+    /* Modal Animation & Styling */
+    .modal-overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(15, 23, 42, 0.4); /* Màu tối, mờ */
+        backdrop-filter: blur(4px); /* Hiệu ứng kính mờ */
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+        display: flex;
+        opacity: 1;
+    }
+
+    .modal-content {
+        background: #fff;
+        padding: 0; /* Reset padding để custom header/footer */
+        border-radius: 16px;
+        width: 90%;
+        max-width: 520px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transform: scale(0.95) translateY(10px);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        overflow: hidden;
+    }
+    .modal-overlay.active .modal-content {
+        transform: scale(1) translateY(0);
+    }
+
+    .modal-header {
+        padding: 20px 24px;
+        background: #fff;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .modal-body {
+        padding: 24px;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    .modal-footer {
+        padding: 16px 24px;
+        background: #f8fafc;
+        border-top: 1px solid #f1f5f9;
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    /* Form Fields đẹp hơn */
+    .form-label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #475569;
+        margin-bottom: 6px;
+    }
+    .form-input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        color: #1e293b;
+        transition: all 0.2s;
+        background-color: #fff;
+    }
+    .form-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+    }
+    .form-input:disabled {
+        background-color: #f1f5f9;
+        color: #94a3b8;
+        border-color: #e2e8f0;
+        cursor: not-allowed;
+    }
+
+    /* Buttons */
+    .btn-save {
+        background: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+        box-shadow: 0 2px 4px rgba(14, 165, 233, 0.2);
+    }
+    .btn-save:hover {
+        background: var(--primary-dark);
+        box-shadow: 0 4px 6px rgba(14, 165, 233, 0.3);
+    }
+    .btn-cancel {
+        background: #fff;
+        color: #64748b;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-cancel:hover {
+        background: #f8fafc;
+        color: #334155;
+        border-color: #cbd5e1;
+    }
+    .close-modal-btn {
+        background: none; border: none; font-size: 1.5rem; color: #94a3b8; cursor: pointer; transition: color 0.2s;
+    }
+    .close-modal-btn:hover { color: #475569; }
+
+    /* Edit Button trong Section */
+    .section-action {
+        background: none;
+        border: none;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: background 0.2s;
+    }
+    .section-action:hover {
+        background: #f0f9ff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <!-- SIDEBAR -->
+    <div id="sidebar"></div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <!-- HEADER -->
+      <div id="header"></div>
+
+      <!-- CONTENT -->
+      <main class="content" role="main">
+        <div class="container">
+          
+          <!-- Hero Section -->
+          <section class="hero" aria-label="Lời chào">
+            <div class="hero-left">
+              <h1 class="hero-title">Hồ sơ sinh viên</h1>
+              <p class="hero-subtitle">Quản lý thông tin cá nhân và tài khoản học tập</p>
+            </div>
+            
+            <div class="hero-right">
+              <!-- Nút mở Modal -->
+              <button class="btn btn-primary-soft" onclick="openEditModal()">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>Cập nhật hồ sơ</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="dashboard-grid">
+            <!-- LEFT: Student Info Card -->
+            <article class="card card-student">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Thông tin chung</h2>
+                  <p class="card-subtitle" style="margin-top: 4px; font-weight: 500;">Dữ liệu được đồng bộ từ Phòng Đào tạo</p>
+                </div>
+                <span class="pill pill-success" title="Trạng thái học tập">
+                  <span class="dot dot-success" aria-hidden="true"></span>
+                  Đang học
+                </span>
+              </div>
+
+              <div class="student-body">
+                <!-- Cột trái: Avatar -->
+                <div class="student-avatar">
+                  <div class="avatar-wrap">
+                    <div class="avatar-circle">
+                      <i class="fa-solid fa-user" id="display-avatar-icon"></i>
+                      <img id="display-avatar-img" src="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                    </div>
+                    <button class="avatar-camera" type="button" title="Thay đổi ảnh đại diện">
+                      <i class="fa-solid fa-camera"></i>
+                    </button>
+                  </div>
+                  <div style="text-align: center; margin-top: 16px;">
+                      <div style="font-size: 1.25rem; font-weight: 700; color: #0f172a;" id="display-name-big">Đang tải...</div>
+                      <div style="color: #64748b; font-size: 0.95rem; font-weight: 500;" id="display-mssv-big">Đang tải...</div>
+                  </div>
+                </div>
+
+                <!-- Cột phải: Thông tin chi tiết -->
+                <div class="student-info-col">
+                    
+                    <!-- 1. Thông tin học tập (Read-only) -->
+                    <div class="info-group-readonly">
+                        <div class="section-title">
+                            <i class="fa-solid fa-graduation-cap"></i> Thông tin học tập
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Mã số sinh viên</div>
+                                <div class="info-value highlight" id="info-mssv">Đang load...</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Lớp sinh hoạt</div>
+                                <div class="info-value" id="info-class">Đang load...</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Khoa quản lý</div>
+                                <div class="info-value" id="info-khoa">Đang load...</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Chuyên ngành</div>
+                                <div class="info-value" id="info-nganh">Đang load...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Thông tin liên lạc (Editable) -->
+                    <div class="info-group-editable">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <div class="section-title" style="margin-bottom: 0; width: 100%;">
+                                <i class="fa-solid fa-address-card"></i> Thông tin liên lạc
+                            </div>
+                            <button class="section-action" onclick="openEditModal()">
+                                <i class="fa-solid fa-pencil"></i> Sửa
+                            </button>
+                        </div>
+                        
+                        <div class="info-grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                            <div class="info-item">
+                                <div class="info-label">Ngày sinh</div>
+                                <div class="info-value" id="info-dob">Đang load...</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Số điện thoại</div>
+                                <div class="info-value" id="info-phone">Đang load...</div>
+                            </div>
+                            <div class="info-item" style="grid-column: span 2;">
+                                <div class="info-label">Email cá nhân</div>
+                                <div class="info-value" id="info-email" style="color: var(--primary-dark);">Đang load...</div>
+                            </div>
+                            <div class="info-item" style="grid-column: span 2;">
+                                <div class="info-label">Địa chỉ liên hệ</div>
+                                <div class="info-value" id="info-address">Đang load...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+            </article>
+
+            <!-- RIGHT COLUMN -->
+            <aside class="right-col">
+              <!-- Widget Lịch học -->
+              <section class="card widget">
+                <div class="widget-head widget-head-soft">
+                  <h3 class="widget-title">
+                    <i class="fa-solid fa-calendar-check" style="color: #10b981;"></i>
+                    Lịch học hôm nay
+                  </h3>
+                  <span class="chip">Thứ 6, 21/12</span>
+                </div>
+                <div class="widget-body" style="min-height: 200px; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #94a3b8;">
+                   <i class="fa-solid fa-mug-hot" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i>
+                   <p>Hôm nay không có lịch học</p>
+                </div>
+              </section>
+            </aside>
+
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL EDIT PROFILE -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal-content">
+        <form id="profileForm" onsubmit="saveProfile(event)">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 40px; height: 40px; background: #f0f9ff; color: var(--primary-color); border-radius: 8px; display: grid; place-items: center; font-size: 1.2rem;">
+                        <i class="fa-solid fa-user-pen"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.1rem; color: var(--text-main);">Cập nhật hồ sơ</h3>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Chỉnh sửa thông tin liên lạc cá nhân</p>
+                    </div>
+                </div>
+                <button type="button" class="close-modal-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Read-only Block -->
+                <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px dashed #cbd5e1;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label class="form-label" style="font-size: 0.8rem;">Mã sinh viên</label>
+                            <input type="text" class="form-input" id="edit-mssv" disabled style="background: transparent; border: none; padding: 0; font-weight: 700; color: #334155;">
+                        </div>
+                        <div>
+                            <label class="form-label" style="font-size: 0.8rem;">Họ và tên</label>
+                            <input type="text" class="form-input" id="edit-name" disabled style="background: transparent; border: none; padding: 0; font-weight: 700; color: #334155;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editable Fields -->
+                <div class="form-group">
+                    <label class="form-label">Ngày sinh <span style="color: #ef4444">*</span></label>
+                    <input type="date" class="form-input" id="edit-dob" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email cá nhân <span style="color: #ef4444">*</span></label>
+                    <input type="email" class="form-input" id="edit-email" required placeholder="name@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Số điện thoại <span style="color: #ef4444">*</span></label>
+                    <input type="tel" class="form-input" id="edit-phone" pattern="[0-9]{10}" placeholder="0xxxxxxxxx" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Địa chỉ liên hệ</label>
+                    <input type="text" class="form-input" id="edit-address" placeholder="Số nhà, đường, phường/xã...">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeEditModal()">Hủy bỏ</button>
+                <button type="submit" class="btn-save">
+                    <i class="fa-solid fa-check" style="margin-right: 6px;"></i> Lưu thay đổi
+                </button>
+            </div>
+        </form>
+    </div>
+  </div>
+
+  <script src="../js/components.js"></script>
+  
+  <script>
+    // Logic Modal
+    const modal = document.getElementById('editModal');
+    
+    function openEditModal() {
+        // Lấy dữ liệu hiện tại từ màn hình chính
+        const currentEmail = document.getElementById('info-email').innerText;
+        const currentPhone = document.getElementById('info-phone').innerText;
+        const currentAddress = document.getElementById('info-address').innerText;
+        
+        // --- THÊM MỚI: Lấy Tên và MSSV từ màn hình chính ---
+        const currentName = document.getElementById('display-name-big').innerText;
+        const currentMssv = document.getElementById('info-mssv').innerText;
+
+        // Parse ngày sinh
+        const dobText = document.getElementById('info-dob').innerText; // dd/mm/yyyy
+        const parts = dobText.split('/');
+        if(parts.length === 3) {
+             const dobISO = `${parts[2]}-${parts[1]}-${parts[0]}`; 
+             document.getElementById('edit-dob').value = dobISO;
+        }
+
+        // Fill Form
+        document.getElementById('edit-email').value = currentEmail;
+        document.getElementById('edit-phone').value = currentPhone;
+        document.getElementById('edit-address').value = currentAddress;
+        
+        // --- THÊM MỚI: Điền Tên và MSSV vào input modal ---
+        document.getElementById('edit-name').value = currentName;
+        document.getElementById('edit-mssv').value = currentMssv;
+
+        // Show Modal
+        modal.style.display = 'flex';
+        // Timeout nhỏ để kích hoạt transition opacity
+        setTimeout(() => {
+            modal.classList.add('active');
+        }, 10);
+    }
+
+    function closeEditModal() {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300); // Chờ animation xong
+    }
+
+    function saveProfile(event) {
+        event.preventDefault();
+
+        // Get values
+        const newEmail = document.getElementById('edit-email').value;
+        const newPhone = document.getElementById('edit-phone').value;
+        const newAddress = document.getElementById('edit-address').value;
+        const newDobISO = document.getElementById('edit-dob').value;
+
+        // Format Date back to display
+        if(newDobISO) {
+            const [y, m, d] = newDobISO.split('-');
+            document.getElementById('info-dob').innerText = `${d}/${m}/${y}`;
+        }
+
+        // Update Display
+        document.getElementById('info-email').innerText = newEmail;
+        document.getElementById('info-phone').innerText = newPhone;
+        document.getElementById('info-address').innerText = newAddress;
+
+        alert("Cập nhật hồ sơ thành công!");
+        closeEditModal();
+    }
+
+    // Close on click outside
+    modal.addEventListener('click', (e) => {
+        if(e.target === modal) closeEditModal();
+    });
+  </script>
+  <script src="../js/app.js"></script>
+</body>
+</html>

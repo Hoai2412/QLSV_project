@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tra cứu học phần | Student Portal</title>
+
+  <!-- ICON + FONT (GIỮ CHUNG DASHBOARD) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- LAYOUT CHUNG -->
+  <link rel="stylesheet" href="../css/layout.css" />
+
+  <!-- CSS RIÊNG CHO TRANG -->
+  <style>
+    /* Page title */
+    .page-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    /* Search card */
+    .search-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 20px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .form-control {
+      width: 100%;
+      height: 42px;
+      padding: 10px 14px 10px 36px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+    }
+
+    .input-icon {
+      position: relative;
+    }
+
+    .input-icon i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      height: 42px;
+      padding: 0 24px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--primary-color);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Table */
+    .table-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .data-table th {
+      background: #f8f9fa;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--primary-color);
+    }
+
+    .data-table tbody tr:hover {
+      background: #f4f9ff;
+    }
+
+    .table-empty {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .search-form {
+        flex-direction: column;
+      }
+      .btn-primary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <!-- SIDEBAR -->
+    <div id="sidebar"></div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <!-- HEADER -->
+      <div id="header"></div>
+
+      <!-- CONTENT -->
+      <main class="content" role="main">
+        <div class="container">
+
+          <h2 class="page-title">Tra cứu học phần</h2>
+
+          <!-- SEARCH -->
+          <section class="search-card">
+            <div class="search-form">
+
+              <div class="form-group">
+                <label for="search-ma-mh">Mã môn học</label>
+                <div class="input-icon">
+                  <i class="fa-solid fa-barcode"></i>
+                  <input
+                    type="text"
+                    id="search-ma-mh"
+                    class="form-control"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="search-ten-mh">Tên môn học</label>
+                <div class="input-icon">
+                  <i class="fa-solid fa-book"></i>
+                  <input
+                    type="text"
+                    id="search-ten-mh"
+                    class="form-control"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+
+              <div class="form-group" style="flex: 0 0 auto;">
+                <button id="btn-search" class="btn-primary">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  Tìm kiếm
+                </button>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- TABLE -->
+          <section class="table-card">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 60px;">STT</th>
+                  <th style="width: 100px;">Mã MH</th>
+                  <th>Tên môn học</th>
+                  <th style="width: 100px;">Số TC</th>
+                  <th style="width: 120px;">Loại môn</th>
+                  <th style="width: 200px;">Ngành</th>
+                </tr>
+              </thead>
+              <tbody id="course-search-body">
+                <tr>
+                  <td colspan="6" class="table-empty">
+                    <i class="fa-solid fa-magnifying-glass" style="font-size: 1.8rem; opacity: 0.3;"></i>
+                    <p>Nhập thông tin và bấm tìm kiếm để xem kết quả</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- COMPONENTS (GIỮ NGUYÊN) -->
+  <script src="../js/components.js"></script>
+
+  <!-- LOGIC (GIỮ NGUYÊN) -->
+  <script src="../js/app.js"></script>
+</body>
+</html>

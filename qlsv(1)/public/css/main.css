@@ -1,0 +1,425 @@
+
+/* ====// public/css/main.css============= RESET & BASE ================= */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: #f4f7f6; color: #333; font-size: 14px; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* ================= LAYOUT (layout.css) ================= */
+.app-container { display: flex; flex-direction: column; height: 100vh; }
+
+/* Header */
+.main-header {
+    background-color: #005a9c; /* Màu xanh đại học truyền thống */
+    color: white;
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+.brand { font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+.user-info { font-size: 13px; }
+.user-info span { font-weight: bold; margin-right: 10px; }
+.btn-logout { background: #d9534f; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+
+/* Sidebar + Content Wrapper */
+.body-wrapper { display: flex; flex: 1; overflow: hidden; }
+
+.sidebar {
+    width: 240px;
+    background: #fff;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.sidebar-menu li a {
+    display: block;
+    padding: 12px 20px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+    transition: 0.2s;
+}
+.sidebar-menu li a:hover, .sidebar-menu li a.active {
+    background-color: #eef5fa;
+    color: #005a9c;
+    border-left: 4px solid #005a9c;
+}
+.sidebar-menu i { margin-right: 10px; width: 20px; text-align: center; }
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f4f7f6;
+}
+.page-title {
+    font-size: 20px;
+    color: #005a9c;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #005a9c;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+/* ================= TABLES (table.css) ================= */
+.table-container { background: #fff; padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; min-width: 800px; }
+.data-table th, .data-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+.data-table th { background-color: #005a9c; color: white; font-weight: 500; text-align: center; white-space: nowrap; }
+.data-table tr:nth-child(even) { background-color: #f9f9f9; }
+.data-table tr:hover { background-color: #f1f1f1; }
+
+/* ================= FORMS (form.css) ================= */
+.form-group { margin-bottom: 15px; }
+.form-control { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+.btn-primary { background-color: #005a9c; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
+.btn-primary:hover { background-color: #00447c; }
+
+/* Login Page specific */
+.login-body {
+    background: linear-gradient(135deg, #005a9c 0%, #003366 100%);
+    display: flex; justify-content: center; align-items: center; height: 100vh;
+}
+.login-box {
+    background: white; padding: 30px; border-radius: 8px; width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+.login-box img { width: 80px; margin-bottom: 20px; }
+
+/* ================ ADMIN LAYOUT ============= */
+
+.admin-body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f4f6;
+}
+
+.admin-layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar bên trái */
+.admin-sidebar {
+    width: 260px;
+    background-color: #0b3b92; /* xanh đậm gần giống hình */
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0;
+}
+
+.admin-logo {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 20px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 16px;
+}
+
+.admin-logo-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    margin-right: 12px;
+    object-fit: cover;
+    background-color: #fff;
+}
+
+.admin-logo-text span {
+    font-size: 13px;
+    display: block;
+}
+
+.admin-logo-text strong {
+    font-size: 15px;
+}
+
+/* Menu */
+.admin-menu {
+    flex: 1;
+}
+
+.admin-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-menu li {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.admin-menu li i {
+    margin-right: 10px;
+    width: 18px;
+    text-align: center;
+}
+
+.admin-menu li:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.admin-menu li.active {
+    background-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Logout */
+.admin-logout {
+    padding: 16px 20px 0 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#btnLogoutAdmin {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: none;
+    background-color: #f97316; /* cam */
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+#btnLogoutAdmin i {
+    font-size: 14px;
+}
+
+/* Content bên phải */
+.admin-content {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 40px;
+    display: flex;
+    align-items: stretch; /* Kéo giãn nội dung ra toàn bộ chiều ngang */
+    justify-content: flex-start; /* Đẩy nội dung lên đầu trang */
+}
+
+.admin-content-section {
+    display: none;
+    width: 100%;
+    /*text-align: center;*/
+}
+
+.admin-content-section.active {
+    display: block;
+}
+
+.admin-content-section h1 {
+    font-size: 24px;
+    color: #0b3b92;
+    font-weight: 600;
+}
+
+.admin-content-section h2 {
+    font-size: 20px;
+    color: #0b3b92;
+    margin-bottom: 10px;
+}
+
+/* ================= STYLE NỘI DUNG ================== */
+/* KHUNG NGOÀI (co giãn toàn bộ section) */
+.category-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* TIÊU ĐỀ TRÁI */
+.cat-title {
+    color: #0b3b92;
+    font-size: 22px;
+    margin-bottom: 15px;
+    text-align: left !important;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* FORM KHỐI LỚN */
+.cat-form {
+    background: #ffffff;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* LAYOUT FORM */
+.form-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* CONTROL */
+input, select, textarea {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    height: 60px;
+}
+
+/* TABLE FULL WIDTH */
+.cat-table {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.cat-table th {
+    background: #0b3b92;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+.cat-table td {
+    background: #f8f9fc;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    word-wrap: break-word;
+}
+
+/* BUTTONS */
+.cat-buttons {
+    margin-top: 20px;
+    text-align: left !important;
+}
+
+.btn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    font-size: 14px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.btn-add { background: #0b3b92; }
+.btn-update { background: #0b3b92; }
+.btn-delete { background: #0b3b92; }
+.btn-save { background: #0b3b92; }
+
+/*  */
+/* TIÊU ĐỀ */
+.title {
+    font-size: 30px;
+    color: #0b3b92;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: 8px;
+}
+
+/* TRANG QUẢN LÝ DANH MỤC */
+/* --- BẢNG DỮ LIỆU CHUẨN (Style giống Quản lý ĐKHP) --- */
+.table-admin {
+    width: 100%;
+    border-collapse: collapse; /* Gộp đường viền để không bị hở */
+    margin-top: 15px;
+    background-color: #fff;
+    font-size: 14px; /* Cỡ chữ vừa phải */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Đổ bóng nhẹ cho bảng nổi lên */
+}
+
+/* 1. Phần Header (Tiêu đề bảng) */
+.table-admin thead tr {
+    background-color: #0d47a1; /* Màu xanh dương đậm giống hình mẫu */
+    color: #ffffff; /* Chữ màu trắng */
+    text-align: left;
+}
+
+.table-admin th {
+    padding: 12px 15px;
+    font-weight: 600;
+    text-transform: uppercase; /* Viết hoa tiêu đề cột (MÃ KHOA, TÊN KHOA...) */
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    border: none; /* Xóa viền dọc header */
+}
+
+/* 2. Phần Body (Nội dung bảng) */
+.table-admin td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dee2e6; /* Đường gạch ngang mờ giữa các dòng */
+    color: #333;
+    vertical-align: middle; /* Căn giữa theo chiều dọc */
+}
+
+/* 3. Hiệu ứng Zebra (Dòng chẵn lẻ đổi màu) */
+.table-admin tbody tr:nth-of-type(even) {
+    background-color: #f8f9fa; /* Màu xám rất nhạt cho dòng chẵn */
+}
+
+.table-admin tbody tr:nth-of-type(odd) {
+    background-color: #ffffff; /* Màu trắng cho dòng lẻ */
+}
+
+/* 4. Hiệu ứng Hover (Khi di chuột vào dòng) */
+.table-admin tbody tr:hover {
+    background-color: #e3f2fd; /* Màu xanh nhạt khi di chuột vào */
+    transition: background-color 0.2s ease;
+}
+
+/* 5. Cột cuối cùng (Thao tác) - Căn giữa */
+.table-admin th:last-child, 
+.table-admin td:last-child {
+    text-align: center;
+    width: 120px; /* Cố định chiều rộng cột thao tác */
+}
+
+/* --- Style cho các nút Thao tác (Icon Sửa/Xóa) --- */
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 6px;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    color: #555;
+}
+
+.btn-icon:hover {
+    background-color: #e9ecef;
+    transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+/* Màu riêng cho nút Xóa (đỏ) và Sửa (xanh) nếu cần */
+.btn-icon .fa-edit {
+    color: #0056b3;
+}
+
+.btn-icon.delete .fa-trash {
+    color: #dc3545;
+}

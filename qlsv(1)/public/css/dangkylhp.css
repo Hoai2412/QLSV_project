@@ -1,0 +1,225 @@
+.dangkylhp-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* FILTER BOX */
+.filter-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filter-box input,
+.filter-box select {
+    padding: 7px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.filter-box input {
+    width: 250px;
+}
+
+.btn {
+    padding: 7px 15px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-search {
+    background-color: #0b3b92;
+}
+
+.btn-refresh {
+    background-color: #0b3b92;
+}
+
+.btn-add {
+    background-color: #0b3b92;
+}
+
+/* TABLE */
+.dkhp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.dkhp-table th {
+    background: #0b3b92;
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.dkhp-table td {
+    padding: 10px;
+    background: #f7f9fc;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    word-wrap: break-word;
+}
+
+/* Reset margin/padding tránh bị đẩy nội dung xuống */
+.admin-content-section {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Căn sát top và căn trái */
+.dkhp-container {
+    margin: 10px 20px !important;
+    padding: 0 !important;
+    width: 100%;
+}
+
+/* Reset cho thẻ h2 (tiêu đề) */
+.dkhp-container h2 {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* CSS CHO MODAL */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none; /* Mặc định ẩn */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    width: 700px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.modal-header {
+    background: #f1f1f1;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #003366;
+    font-size: 18px;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+legend {
+    font-weight: bold;
+    color: #333;
+    padding: 0 5px;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.half {
+    width: 48%;
+}
+.form-group.full {
+    width: 100%;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.form-group input, .form-group select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #fafafa;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-red {
+    background: #d9534f;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.btn-green {
+    background: #008a5e; /* Màu xanh giống hình */
+    color: white;
+    border: none;
+    padding: 8px 25px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.status-badge {
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #fff;
+}
+.status-open { background: #28a745; }
+.status-closed { background: #6c757d; }
+.status-future { background: #17a2b8; }
+
+.form-group.third {
+    width: 32%; /* Mỗi cột chiếm khoảng 1/3 */
+}
+
+/* Đảm bảo responsive một chút nếu màn hình nhỏ */
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+    }
+    .form-group.third, .form-group.half {
+        width: 100%;
+    }
+}

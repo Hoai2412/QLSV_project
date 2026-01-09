@@ -1,0 +1,95 @@
+/* public/css/diemHistory.css */
+:root{
+  --blue:#0b3d91;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2a37;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+}
+
+.history-wrap{
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.history-card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+.history-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 16px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+
+.history-title{
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.btn-back{
+  text-decoration:none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  font-weight: 600;
+}
+.btn-back:hover{ background:#f3f4f6; }
+
+.table{
+  width:100%;
+  border-collapse: collapse;
+}
+
+.table thead th{
+  background: var(--blue);
+  color:#fff;
+  text-align:center;
+  padding: 12px 10px;
+  font-weight:700;
+  border-right: 1px solid rgba(255,255,255,.15);
+}
+
+.table tbody td{
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align:center;
+}
+
+.table tbody tr:hover{
+  background:#f8fafc;
+}
+
+.cell-left{
+  text-align:left !important;
+}
+.badge{
+  display:inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color:#fff;
+  background: #111827;
+}
+.badge-gv{ background:#0b3d91; }

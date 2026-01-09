@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+<link rel="stylesheet" href="/css/diemHistory.css">
+<div class="history-wrap">
+  <div class="history-card">
+    <div class="history-header">
+      <h1 id="title" class="history-title">Lịch sử sửa điểm</h1>
+      <a class="btn-back" href="/admin/diem" onclick="event.preventDefault(); history.back();">← Quay lại</a>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Thời gian</th>
+          <th>Người sửa</th>
+          <th>MSV</th>
+          <th>Họ tên</th>
+          <th>Nội dung</th>
+        </tr>
+      </thead>
+      <tbody id="history-tbody">
+        <tr><td colspan="5" style="text-align:center;padding:14px;">Đang tải...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="/js/diemHistory.js"></script>
+</body>
+</html>

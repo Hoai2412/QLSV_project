@@ -1,0 +1,108 @@
+<div class="dangkylhp-wrapper">
+
+    <h2 class="title">
+        <i class="fa fa-book"></i> QUẢN LÝ ĐĂNG KÝ HỌC PHẦN
+    </h2>
+
+    <div class="filter-box">
+        <input type="text" id="keyword" placeholder="Nhập nội dung cần tìm…">
+        <select id="filterType">
+            <option value="tendot">Tìm theo tên đợt</option>
+            <option value="namhoc">Tìm theo năm học</option>
+            <option value="hocky">Tìm theo học kỳ</option>
+        </select>
+
+        <button class="btn btn-search" onclick="searchDotDKHP()">
+            <i class="fa fa-search"></i> Tìm
+        </button>
+
+        <button class="btn btn-refresh" onclick="refreshDotDKHP()">
+            <i class="fa fa-sync"></i>
+        </button>
+
+        <button class="btn btn-add" onclick="openModal()">
+            <i class="fa fa-plus"></i> Thêm mới
+        </button>
+    </div>
+
+    <table class="dkhp-table">
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên đợt đăng ký</th>
+            <th>Năm học</th>
+            <th>Học kỳ</th>
+            <th>Bắt đầu</th>
+            <th>Kết thúc</th>
+            <th>Giới hạn TC</th>
+            <th>Trạng thái</th>
+            <th>Tác vụ</th>
+        </tr>
+        </thead>
+        <tbody id="tableDotDKHP">
+            </tbody>
+    </table>
+
+</div>
+
+<div id="modalAddDot" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fa fa-edit"></i> Thêm/Sửa đợt đăng ký</h3>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="formAddDot">
+                <fieldset>
+                    <legend>Thông tin chung</legend>
+                    
+                    <div class="form-row">
+                        <div class="form-group third">
+                            <label>Tên đợt đăng ký:</label>
+                            <input type="text" id="tenDot" required placeholder="VD: Đợt 1...">
+                        </div>
+                        
+                        <div class="form-group third">
+                            <label>Năm học:</label>
+                            <input type="text" id="txtNamHoc" required placeholder="VD: 2025-2026">
+                        </div>
+
+                        <div class="form-group third">
+                            <label>Học kỳ:</label>
+                            <select id="slHocKy" required>
+                                <option value="HK01">Học kỳ 1</option>
+                                <option value="HK02">Học kỳ 2</option>
+                                <option value="HK03">Học kỳ hè</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label>Thời gian bắt đầu:</label>
+                            <input type="datetime-local" id="ngayBD" required>
+                        </div>
+                        <div class="form-group half">
+                            <label>Thời gian kết thúc:</label>
+                            <input type="datetime-local" id="ngayKT" required>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Thiết lập giới hạn</legend>
+                    <div class="form-group full">
+                        <label>Giới hạn tối đa tín chỉ:</label>
+                        <input type="number" id="tinChi" value="20">
+                    </div>
+                </fieldset>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-red" onclick="closeModal()">Quay lại</button>
+                    <button type="submit" class="btn-green">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,119 @@
+<!-- views/admin/admin-dashboard.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin - Quản lý Sinh viên</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/dangkylhp.css">
+    <link rel="stylesheet" href="/css/lophp.css">
+    <link rel="stylesheet" href="/css/lichthi.css">
+    <link rel="stylesheet" href="/css/nguoidung.css">
+    <link rel="stylesheet" href="/css/diem.css">
+    <link rel="stylesheet" href="/css/baocao.css">
+
+
+
+    <!-- Font Awesome cho icon (nếu muốn) -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-..."
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="/img/logo_dhqn.jpg" alt="Logo QNU" class="admin-logo-img">
+                <div class="admin-logo-text">
+                    <span>Trường Đại học</span>
+                    <strong>Quy Nhơn</strong>
+                </div>
+            </div>
+
+            <nav class="admin-menu">
+                <ul>
+                    <li class="active" data-target="welcome">
+                        <i class="fa fa-home"></i>
+                        <span>Trang chủ</span>
+                    </li>
+                    <li data-target="dm">
+                        <i class="fa fa-list-ul"></i>
+                        <span>Quản lý danh mục</span>
+                    </li>
+                    <li data-target="lhp">
+                        <i class="fa fa-layer-group"></i>
+                        <span>Quản lý lớp học phần</span>
+                    </li>
+                    <li data-target="dkhp">
+                        <i class="fa fa-file-signature"></i>
+                        <span>Quản lý đăng ký học phần</span>
+                    </li>
+                    <li data-target="lichthi">
+                        <i class="fa fa-calendar-days"></i>
+                        <span>Quản lý lịch thi</span>
+                    </li>
+                    <li data-target="users">
+                        <i class="fa fa-users-cog"></i>
+                        <span>Quản lý người dùng</span>
+                    </li>
+                    <li data-target="diem">
+                        <i class="fa fa-graduation-cap"></i>
+                        <span>Quản lý điểm</span>
+                    </li>
+                    <li data-target="baocao">
+                        <i class="fa fa-chart-bar"></i>
+                        <span>Thống kê - Báo cáo</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="admin-logout">
+                <button id="btnLogoutAdmin">
+                    <i class="fa fa-sign-out-alt"></i>
+                    <span>Thoát</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- CONTENT -->
+        <main class="admin-content">
+            <section id="admin-content-welcome" class="admin-content-section active">
+                <h1>Chào mừng đến với hệ thống Quản lý Sinh viên</h1>
+            </section>
+
+            <!-- Các section khác sau này bạn có thể thay bằng iframe / load động -->
+            <section id="admin-content-dm" class="admin-content-section">
+            </section>
+
+            <section id="admin-content-lhp" class="admin-content-section">
+            </section>
+
+            <section id="admin-content-dkhp" class="admin-content-section">
+            </section>
+
+            <section id="admin-content-lichthi" class="admin-content-section">
+            </section>
+
+            <section id="admin-content-users" class="admin-content-section">
+            </section>
+
+            <section id="admin-content-diem" class="admin-content-section">
+            </section>
+
+            <section id="admin-content-baocao" class="admin-content-section">
+            </section>
+        </main>
+    </div>
+
+    <script src="/js/admin.js"></script>
+    <script src="/js/lophocphan.js"></script>
+    <script src="/js/diem.js"></script>
+    <script src="/js/lichthijs"></script>
+
+</body>
+</html>
