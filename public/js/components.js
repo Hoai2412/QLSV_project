@@ -1,21 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-  /* =========================
-     ROUTE CONFIG (KHÔNG .html)
-  ========================= */
+  //Sửa phần này 
   const routes = [
-    {
-      path: "/student",
-      label: "Trang chủ",
-      icon: "fa-house",
-      title: "Dashboard"
-    },
-    {
-      path: "/student/schedule",
-      label: "Lịch học",
-      icon: "fa-calendar-days",
-      title: "Thời khóa biểu"
-    },
+
     {
       path: "/student/register",
       label: "Đăng ký học phần",
@@ -45,9 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
       label: "Lịch thi",
       icon: "fa-calendar-check",
       title: "Lịch thi"
-    }
+    },
+    {
+      path: "/student/schedule",
+      label: "Thời khóa biểu",
+      icon: "fa-calendar-days",
+      title: "Thời khóa biểu"
+    },
   ];
-
+//
   const currentPath = window.location.pathname;
 
   /* =========================

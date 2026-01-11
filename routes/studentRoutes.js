@@ -3,13 +3,14 @@ const router = express.Router();
 const studentController = require("../controllers/studentController");
 
 // ===== THÔNG TIN SINH VIÊN =====
-router.get("/info", studentController.getStudentInfo);
+// router.get("/info", studentController.getStudentInfo);
 
 // ===== LỊCH HỌC =====
 router.get("/schedule", studentController.getSchedule);
 
 // ===== KẾT QUẢ HỌC TẬP =====
 router.get("/grades", studentController.getGrades);
+
 
 // ===== DANH SÁCH LỚP HỌC PHẦN MỞ =====
 router.get("/register/list", studentController.getOpenedCourses);
@@ -30,6 +31,8 @@ router.get("/exam-schedule", studentController.getExamSchedule);
 // ===== TRA CỨU HỌC PHẦN =====
 router.get("/course-search", studentController.searchCourse);
 router.post("/update-profile", studentController.updateStudentProfile);
+// router.get('/namhoc', studentController.getNamHoc);
+// router.get('/hocky', studentController.getHocKy);
 
 
 module.exports = router;

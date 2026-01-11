@@ -27,6 +27,36 @@ exports.getInfo = async (req, res) => {
     }
 };
 
+exports.getDashboardStats = async (req, res) => {
+    try {
+        const MaGV = req.session.giangvien.MaGV;
+
+        // 1. Tổng lớp
+        const [countLHP] = await db.execute(`SELECT COUNT(*) as total FROM lophocphan WHERE MaGV = ?`, [MaGV]);
+        // 2. Tổng SV
+        const [countSV] = await db.execute(`SELECT SUM(SiSoHienTai) as total FROM lophocphan WHERE MaGV = ?`, [MaGV]);
+        // 3. Lớp chưa nhập điểm (Logic ví dụ: dựa trên bảng bangdiem có IsLocked = 0)
+        const [countPending] = await db.execute(
+            `SELECT COUNT(DISTINCT lhp.MaLHP) as total 
+             FROM lophocphan lhp
+             JOIN dangkyhocphan dk ON lhp.MaLHP = dk.MaLHP
+             JOIN bangdiem bd ON dk.ID = bd.DangKyID
+             WHERE lhp.MaGV = ? AND bd.IsLocked = 0`, [MaGV]
+        );
+
+        res.json({
+            success: true,
+            data: {
+                totalLHP: countLHP[0].total || 0,
+                totalSV: countSV[0].total || 0,
+                pendingGrades: countPending[0].total || 0
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Lỗi Server" });
+    }
+};
+
 
 // ===============================
 // 2. Lớp học phần giảng viên dạy
@@ -79,25 +109,46 @@ exports.getLopHocPhan = async (req, res) => {
 exports.getLichDay = async (req, res) => {
     try {
         const MaGV = req.session.giangvien.MaGV;
+        
+        // BƯỚC 1: Lấy tham số từ URL (ví dụ: ?MaHK=2024HK01&Thu=2)
+        const { MaHK, Thu } = req.query; 
 
-        const [rows] = await db.execute(
-            `SELECT lh.Thu, lh.TietBatDau, lh.TietKetThuc, lh.MaPhong,
-                    lhp.MaLHP, mh.TenMH
-             FROM lichhoc lh
-             JOIN lophocphan lhp ON lh.MaLHP = lhp.MaLHP
-             JOIN monhoc mh ON lhp.MaMH = mh.MaMH
-             WHERE lhp.MaGV = ?
-             ORDER BY lh.Thu, lh.TietBatDau`,
-            [MaGV]
-        );
+        // BƯỚC 2: Viết câu SQL gốc (Join các bảng để lấy đủ thông tin)
+        let sql = `
+            SELECT lh.Thu, lh.TietBatDau, lh.TietKetThuc, lh.MaPhong,
+                   lhp.MaLHP, mh.TenMH, lhp.MaHK
+            FROM lichhoc lh
+            JOIN lophocphan lhp ON lh.MaLHP = lhp.MaLHP
+            JOIN monhoc mh ON lhp.MaMH = mh.MaMH
+            WHERE lhp.MaGV = ?
+        `;
+        
+        const params = [MaGV]; // MaGV luôn luôn có mặt đầu tiên
 
-        return res.json({ success: true, data: rows });
+        // BƯỚC 3: Kiểm tra nếu có lọc Học kỳ
+        if (MaHK && MaHK !== "") {
+            sql += ` AND lhp.MaHK = ?`;
+            params.push(MaHK);
+        }
+
+        // BƯỚC 4: Kiểm tra nếu có lọc Thứ (Ngày trong tuần)
+        if (Thu && Thu !== "") {
+            sql += ` AND lh.Thu = ?`;
+            params.push(Thu);
+        }
+
+        // Sắp xếp theo Thứ và Tiết tăng dần
+        sql += ` ORDER BY lh.Thu ASC, lh.TietBatDau ASC`;
+
+        const [rows] = await db.execute(sql, params);
+        res.json({ success: true, data: rows });
 
     } catch (err) {
-        console.error("Lỗi getLichDay:", err);
-        res.json({ success: false });
+        console.error("Lỗi Controller:", err);
+        res.status(500).json({ success: false, message: "Lỗi server" });
     }
 };
+
 // ===============================
 // 7. Lịch thi (theo giảng viên/giám thị)
 // ===============================

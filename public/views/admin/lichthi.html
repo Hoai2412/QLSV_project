@@ -6,7 +6,10 @@
     </h2>
 
     <div class="filter-row">
-        <input id="searchMonThi" class="input-control" type="text" placeholder="Nhập môn thi...">
+       <input id="searchMonThi" class="input-control" type="text"
+       placeholder="Nhập môn thi... (Tên hoặc Mã)"
+       list="monhocSearchList">
+<datalist id="monhocSearchList"></datalist>
         <select id="filterHocKy" class="input-control">
             <option value="">Tất cả học kỳ</option>
         </select>
@@ -23,6 +26,7 @@
                 <th>Mã LT</th>
                 <th>Học kỳ</th>
                 <th>Khoa</th>
+                <th>Mã MH</th>
                 <th>Môn thi</th>
                 <th>Ngày thi</th>
                 <th>Phòng</th>
@@ -58,14 +62,17 @@
             <option value="">-- Chọn khoa --</option>
         </select>
     </div>
+            <div class="form-row">
+        <label>Lớp học phần:</label>
+        <select id="ltMaLHP" class="input-control">
+            <option value="">-- Chọn lớp học phần --</option>
+        </select>
+        </div>
 
-    <div class="form-row">
+        <div class="form-row">
         <label>Môn thi:</label>
-        <input id="ltMonThi" class="input-control" list="monhocList">
-        <datalist id="monhocList"></datalist>
-    </div>
-
-
+        <input id="ltMonThi" class="input-control" type="text" readonly placeholder="(Tự động theo lớp học phần)">
+        </div>
 
         <div class="form-row">
             <label>Ngày thi:</label>

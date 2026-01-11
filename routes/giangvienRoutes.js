@@ -40,6 +40,7 @@ router.get("/nhapdiem", requireGV, (req, res) => {
 
 // ===== API (KHÔNG requireGV – controller tự check) =====
 router.get("/api/info", gvController.getInfo);
+router.get("/api/dashboard-stats", gvController.getDashboardStats);
 router.get("/api/lophocphan", gvController.getLopHocPhan);
 router.get("/api/lichday", gvController.getLichDay);
 router.get("/api/lichthi", gvController.getLichThi);

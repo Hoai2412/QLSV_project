@@ -215,9 +215,6 @@ function bindLichThiFilter() {
 // ========================================
 //  CHI TIẾT LỚP HỌC PHẦN
 // ========================================
-// ========================================
-//  CHI TIẾT LỚP HỌC PHẦN
-// ========================================
 async function loadDetailLHP() {
     const url = new URL(window.location.href);
     const MaLHP = url.searchParams.get("malhp");
@@ -318,6 +315,34 @@ list.forEach((s, i) => {
 
 // ========================================
 //  LỊCH GIẢNG DẠY
+// ========================================
+// async function loadGVLichDay() {
+//     const table = document.getElementById("lich-table");
+//     if (!table) return;
+
+//     const json = await gvGet("/giangvien/api/lichday");
+//     table.innerHTML = "";
+
+//     if (!json.success || json.data.length === 0) {
+//         table.innerHTML = `<tr><td colspan="6" style="text-align:center;">Không có dữ liệu</td></tr>`;
+//         return;
+//     }
+
+//     json.data.forEach(r => {
+//         table.innerHTML += `
+//             <tr>
+//                 <td>Thứ ${r.Thu}</td>
+//                 <td>${r.TietBatDau} - ${r.TietKetThuc}</td>
+//                 <td>${r.MaLHP}</td>
+//                 <td>${r.TenMH}</td>
+//                 <td>${r.MaPhong}</td>
+                
+//             </tr>
+//         `;
+//     });
+// }
+// ========================================
+//  LỊCH GIẢNG DẠY (Cập nhật logic lọc)
 // ========================================
 async function loadGVLichDay() {
     const table = document.getElementById("lich-table");
@@ -559,8 +584,11 @@ data.forEach((s, i) => {
       <td>${i + 1}</td>
       <td>${s.MaSV}</td>
       <td>${s.HoTen}</td>
-      <td><input type="number" step="0.1" class="inp-diem-qt" value="${diemQT}"></td>
-      <td><input type="number" step="0.1" class="inp-diem-ck" value="${diemCK}"></td>
+      <td><input type="number" step="0.1" min="0" max="10"
+           class="inp-diem-qt" value="${diemQT}"></td>
+    <td><input type="number" step="0.1" min="0" max="10"
+           class="inp-diem-ck" value="${diemCK}"></td>
+
       <td class="cell-tk10">${diemTK}</td>
       <td class="cell-chu">${diemChu}</td>
       <td class="cell-gpa">${gpa}</td>
@@ -570,13 +598,29 @@ data.forEach((s, i) => {
 
 // Auto recalc sau khi render
 const trs = [...tbody.querySelectorAll("tr")];
+
+// Định nghĩa clamp 1 lần (không tạo lại trong mỗi vòng lặp)
+const clamp10 = (inp) => {
+  if (!inp) return;
+  const v = inp.value;
+  if (v === "" || v == null) return; // cho phép để trống nếu bạn muốn
+  let n = Number(v);
+  if (Number.isNaN(n)) { inp.value = ""; return; }
+  if (n < 0) n = 0;
+  if (n > 10) n = 10;
+  inp.value = n;
+};
+
 trs.forEach(tr => {
   const qt = tr.querySelector(".inp-diem-qt");
   const ck = tr.querySelector(".inp-diem-ck");
-  if (qt) qt.addEventListener("input", () => recalcRow(tr));
-  if (ck) ck.addEventListener("input", () => recalcRow(tr));
+
+  if (qt) qt.addEventListener("input", () => { clamp10(qt); recalcRow(tr); });
+  if (ck) ck.addEventListener("input", () => { clamp10(ck); recalcRow(tr); });
+
   recalcRow(tr);
 });
+
 
 // Khi đổi tỷ lệ -> recalc toàn bộ
 const recalcAll = () => trs.forEach(recalcRow);
@@ -589,7 +633,7 @@ if (ipCK) ipCK.addEventListener("input", recalcAll);
     // Bắt nút Lưu
     const btnSave = document.getElementById("btn-save-all");
 if (!btnSave) return;
-    btnSave.onclick = async () => {
+   btnSave.onclick = async () => {
   const tyleQT = parseFloat(document.getElementById("diem-tyle-qt").value) || 0;
   const tyleCK = parseFloat(document.getElementById("diem-tyle-ck").value) || 0;
 
@@ -598,34 +642,48 @@ if (!btnSave) return;
     return;
   }
 
-  // gửi về server dạng 0-1
   const TyLeQT = tyleQT / 100;
   const TyLeCK = tyleCK / 100;
 
   const rows = [...tbody.querySelectorAll("tr")];
-  const ds = rows.map(r => {
-    const DangKyID = parseInt(r.dataset.dangkid, 10);
-    const diemQT = parseFloat(r.querySelector(".inp-diem-qt").value) || 0;
-    const diemCK = parseFloat(r.querySelector(".inp-diem-ck").value) || 0;
 
-    const tk10 = +(diemQT * tyleQT / 100 + diemCK * tyleCK / 100).toFixed(2);
-    const { DiemChu, GPA, KetQua } = convert10(tk10);
+  let ds;
+  try {
+    ds = rows.map(r => {
+      const DangKyID = parseInt(r.dataset.dangkid, 10);
+      const diemQT = parseFloat(r.querySelector(".inp-diem-qt").value);
+      const diemCK = parseFloat(r.querySelector(".inp-diem-ck").value);
 
-    return {
-      DangKyID,
-      DiemQT: diemQT,
-      DiemCK: diemCK,
-      DiemTK10: tk10,
-      DiemChu,
-      GPA,
-      KetQua
-    };
-  }); // <-- PHẢI đóng map ở đây
+      // cho phép trống -> coi như 0
+      const qt = Number.isNaN(diemQT) ? 0 : diemQT;
+      const ck = Number.isNaN(diemCK) ? 0 : diemCK;
+
+      if (qt < 0 || qt > 10 || ck < 0 || ck > 10) {
+        throw new Error(`Điểm phải trong khoảng 0–10 (SV: ${DangKyID})`);
+      }
+
+      const tk10 = +(qt * tyleQT / 100 + ck * tyleCK / 100).toFixed(2);
+      const { DiemChu, GPA, KetQua } = convert10(tk10);
+
+      return {
+        DangKyID,
+        DiemQT: qt,
+        DiemCK: ck,
+        DiemTK10: tk10,
+        DiemChu,
+        GPA,
+        KetQua
+      };
+    });
+  } catch (e) {
+    alert(e.message || "Điểm không hợp lệ");
+    return;
+  }
 
   const res = await fetch("/giangvien/api/bangdiem/save", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ MaLHP, TyLeQT, TyLeCK, ds }) // <-- gửi TyLeQT/TyLeCK đúng
+    body: JSON.stringify({ MaLHP, TyLeQT, TyLeCK, ds })
   });
 
   const text = await res.text();
@@ -640,11 +698,12 @@ if (!btnSave) return;
 
   if (json.success) {
     alert("Lưu bảng điểm thành công");
-    await loadNhapDiemPage(); // reload để đồng bộ DB
+    await loadNhapDiemPage();
   } else {
     alert(json.message || "Lỗi lưu bảng điểm");
   }
 };
+
 
 }
 
@@ -660,13 +719,23 @@ document.addEventListener("DOMContentLoaded", () => {
     loadGVLopHocPhan();
     loadDetailLHP();
     loadTodaySchedule();
-     loadNhapDiemPage(); 
+    loadNhapDiemPage(); 
     loadNhatKyPage();
 
     // Khi chọn học kỳ -> reload bảng
     const hk = document.getElementById("filter-hocky");
     if (hk) {
         hk.addEventListener("change", loadGVLopHocPhan);
+    }
+
+    // Xử lý nút lọc
+    const btnLoc = document.getElementById("btn-loc-lich");
+    if (btnLoc) {
+        btnLoc.onclick = (e) => {
+            e.preventDefault();
+            console.log("Đang lọc dữ liệu...");
+            loadGVLichDay(); // Gọi lại hàm, hàm này sẽ tự đọc giá trị từ 2 ô select
+        };
     }
 
     // Đăng xuất (nếu bạn đã dùng API này bên SV)

@@ -76,30 +76,129 @@ exports.getSchedule = async (req, res) => {
 // ==============================================
 // 3. Kết quả học tập
 // ==============================================
+// // 3. KẾT QUẢ HỌC TẬP (THEO NĂM HỌC - HỌC KỲ)
+// // ==============================================
+// exports.getGrades = async (req, res) => {
+//     try {
+//         const maSV = req.session.user?.MaSV;
+//         if (!maSV) {
+//             return res.json({ success: false, message: "Chưa đăng nhập" });
+//         }
+
+//         const [rows] = await db.execute(
+//             `
+//             SELECT 
+//                 -- Năm học & học kỳ (dùng để gom nhóm)
+//                 nh.MaNamHoc,
+//                 nh.MoTa        AS NamHoc,
+//                 hk.TenHK       AS HocKy,
+//                 hk.ThuTu       AS ThuTuHK,
+
+//                 -- Lớp & môn học
+//                 lhp.MaLHP,
+//                 mh.MaMH,
+//                 mh.TenMH,
+//                 mh.SoTC,
+
+//                 -- Điểm
+//                 bd.DiemQT,
+//                 bd.DiemCK,
+//                 bd.DiemTK10,
+//                 bd.DiemChu,
+//                 bd.KetQua
+//             FROM sinhvien sv
+//             JOIN dangkyhocphan dk 
+//                 ON sv.MaSV = dk.MaSV
+//             JOIN lophocphan lhp 
+//                 ON dk.MaLHP = lhp.MaLHP
+//             JOIN monhoc mh 
+//                 ON lhp.MaMH = mh.MaMH
+//             JOIN hocky hk 
+//                 ON dk.MaHK = hk.MaHK
+//             JOIN namhoc nh 
+//                 ON hk.MaNamHoc = nh.MaNamHoc
+//             LEFT JOIN bangdiem bd 
+//                 ON dk.ID = bd.DangKyID
+//             WHERE sv.MaSV = ?
+//               AND dk.TrangThai = 'DaDangKy'
+//               -- 🔒 CHẶN DỮ LIỆU LỖI (QUAN TRỌNG)
+//               AND nh.MoTa IS NOT NULL
+//               AND hk.TenHK IS NOT NULL
+//             ORDER BY 
+//                 nh.MaNamHoc DESC,   -- năm mới trước
+//                 hk.ThuTu ASC,       -- HK 1 → 2
+//                 mh.TenMH ASC
+//             `,
+//             [maSV]
+//         );
+
+//         return res.json({
+//             success: true,
+//             data: rows
+//         });
+
+//     } catch (err) {
+//         console.error("Lỗi getGrades:", err);
+//         return res.json({
+//             success: false,
+//             message: "Lỗi server"
+//         });
+//     }
+// };
+// ===== 3. KẾT QUẢ HỌC TẬP (THEO monhoc_nganh) =====
 exports.getGrades = async (req, res) => {
     try {
         const maSV = req.session.user?.MaSV;
-        if (!maSV) return res.json({ success: false, message: "Chưa đăng nhập" });
+        if (!maSV) {
+            return res.json({ success: false, message: "Chưa đăng nhập" });
+        }
 
         const [rows] = await db.execute(
-            `SELECT 
-                l.MaLHP, mh.TenMH, mh.SoTC,
-                b.DiemQT, b.DiemCK, b.DiemTK10, b.DiemChu, b.KetQua
-            FROM dangkyhocphan dk
-            JOIN lophocphan l ON dk.MaLHP = l.MaLHP
-            JOIN monhoc mh ON l.MaMH = mh.MaMH
-            JOIN bangdiem b ON b.DangKyID = dk.ID
-            WHERE dk.MaSV = ?`,
+            `
+            SELECT 
+                mhn.NamKienNghi   AS Nam,
+                mhn.HKienNghi    AS HK,
+
+                mh.MaMH,
+                mh.TenMH,
+                mh.SoTC,
+
+                bd.DiemQT,
+                bd.DiemCK,
+                bd.DiemTK10,
+                bd.DiemChu,
+
+                CASE 
+                    WHEN bd.DiemTK10 IS NOT NULL THEN 'DaHoc'
+                    ELSE 'ChuaHoc'
+                END AS TrangThai
+            FROM sinhvien sv
+            JOIN monhoc_nganh mhn 
+                ON sv.MaNganh = mhn.MaNganh
+            JOIN monhoc mh 
+                ON mhn.MaMH = mh.MaMH
+            LEFT JOIN lophocphan lhp 
+                ON lhp.MaMH = mh.MaMH
+            LEFT JOIN dangkyhocphan dk 
+                ON dk.MaLHP = lhp.MaLHP
+               AND dk.MaSV = sv.MaSV
+               AND dk.TrangThai = 'DaDangKy'
+            LEFT JOIN bangdiem bd 
+                ON bd.DangKyID = dk.ID
+            WHERE sv.MaSV = ?
+            ORDER BY mhn.NamKienNghi, mhn.HKienNghi, mh.MaMH
+            `,
             [maSV]
         );
 
-        return res.json({ success: true, data: rows });
+        res.json({ success: true, data: rows });
 
     } catch (err) {
-        console.error("Lỗi API getGrades:", err);
+        console.error("Lỗi getGrades:", err);
         res.json({ success: false, message: "Lỗi server" });
     }
 };
+
 
 // ==============================================
 // 4. Lớp học phần đang mở (gom lịch thành LichHoc)
@@ -340,45 +439,76 @@ exports.cancelRegistration = async (req, res) => {
     }
 };
 
-// ==============================================
+// 
 // 8. Chương trình đào tạo (ĐÚNG THEO DB chuongtrinhdaotao)
-// ==============================================
+// exports.getCurriculum = async (req, res) => {
+//   try {
+//     const maSV = req.session.user?.MaSV;
+//     if (!maSV) return res.json({ success: false, message: "Chưa đăng nhập" });
+
+//     const [[sv]] = await db.execute(
+//       "SELECT MaNganh FROM sinhvien WHERE MaSV = ?",
+//       [maSV]
+//     );
+//     if (!sv) return res.json({ success: false, message: "Không tìm thấy sinh viên" });
+
+//     const [rows] = await db.execute(
+//       `
+//       SELECT
+//         ctdt.NamKienNghi AS Nam,
+//         ctdt.HKienNghi  AS HK,
+//         mh.MaMH,
+//         mh.TenMH,
+//         mh.SoTC,
+//         ctdt.LoaiMon,
+//         ctdt.GhiChu
+//       FROM chuongtrinhdaotao ctdt
+//       JOIN monhoc mh ON mh.MaMH = ctdt.MaMH
+//       WHERE ctdt.MaNganh = ?
+//       ORDER BY ctdt.NamKienNghi, ctdt.HKienNghi, mh.MaMH
+//       `,
+//       [sv.MaNganh]
+//     );
+
+//     res.json({ success: true, data: rows });
+//   } catch (err) {
+//     console.error("Lỗi API getCurriculum:", err);
+//     res.json({ success: false, message: "Lỗi server" });
+//   }
+// };
+
+// ===== 8. CHƯƠNG TRÌNH ĐÀO TẠO (THEO monhoc_nganh) =====
 exports.getCurriculum = async (req, res) => {
-  try {
-    const maSV = req.session.user?.MaSV;
-    if (!maSV) return res.json({ success: false, message: "Chưa đăng nhập" });
+    try {
+        const maSV = req.session.user?.MaSV;
+        if (!maSV) {
+            return res.json({ success: false, message: "Chưa đăng nhập" });
+        }
 
-    const [[sv]] = await db.execute(
-      "SELECT MaNganh FROM sinhvien WHERE MaSV = ?",
-      [maSV]
-    );
-    if (!sv) return res.json({ success: false, message: "Không tìm thấy sinh viên" });
+        const [rows] = await db.execute(
+            `
+            SELECT 
+                mhn.NamKienNghi AS Nam,
+                mhn.HKienNghi AS HK,
+                mh.MaMH,
+                mh.TenMH,
+                mh.SoTC,
+                mh.LoaiMon
+            FROM sinhvien sv
+            JOIN monhoc_nganh mhn ON sv.MaNganh = mhn.MaNganh
+            JOIN monhoc mh ON mhn.MaMH = mh.MaMH
+            WHERE sv.MaSV = ?
+            ORDER BY mhn.NamKienNghi, mhn.HKienNghi, mh.MaMH
+            `,
+            [maSV]
+        );
 
-    const [rows] = await db.execute(
-      `
-      SELECT
-        ctdt.NamKienNghi AS Nam,
-        ctdt.HKienNghi  AS HK,
-        mh.MaMH,
-        mh.TenMH,
-        mh.SoTC,
-        ctdt.LoaiMon,
-        ctdt.GhiChu
-      FROM chuongtrinhdaotao ctdt
-      JOIN monhoc mh ON mh.MaMH = ctdt.MaMH
-      WHERE ctdt.MaNganh = ?
-      ORDER BY ctdt.NamKienNghi, ctdt.HKienNghi, mh.MaMH
-      `,
-      [sv.MaNganh]
-    );
-
-    res.json({ success: true, data: rows });
-  } catch (err) {
-    console.error("Lỗi API getCurriculum:", err);
-    res.json({ success: false, message: "Lỗi server" });
-  }
+        res.json({ success: true, data: rows });
+    } catch (err) {
+        console.error("Lỗi API getCurriculum:", err);
+        res.json({ success: false, message: "Lỗi server" });
+    }
 };
-
 
 
 // ==============================================
