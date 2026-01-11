@@ -160,5 +160,86 @@
 <!-- COMPONENTS -->
 <script src="../js/components.js"></script>
 <script src="../js/app.js"></script>
+<script>
+async function loadCurriculum() {
+    const container = document.getElementById('curriculum-container');
+
+    try {
+        const res = await fetch('/api/student/curriculum', {
+            credentials: 'same-origin'
+        });
+
+        const result = await res.json();
+        console.log(result); // DEBUG
+
+        if (!result.success) {
+            container.innerHTML = `<div class="loading">${result.message || 'Không có dữ liệu'}</div>`;
+            return;
+        }
+
+        if (result.data.length === 0) {
+            container.innerHTML = '<div class="loading">Không có môn học</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+
+        const grouped = {};
+        result.data.forEach(item => {
+            const key = `Năm ${item.Nam} - HK ${item.HK}`;
+            if (!grouped[key]) grouped[key] = [];
+            grouped[key].push(item);
+        });
+
+        Object.entries(grouped).forEach(([semester, courses]) => {
+            const totalCredits = courses.reduce((s, c) => s + c.SoTC, 0);
+
+            let rows = '';
+            courses.forEach(c => {
+                rows += `
+                    <tr>
+                        <td>${c.MaMH}</td>
+                        <td>${c.TenMH}</td>
+                        <td>${c.SoTC}</td>
+                        <td>
+                            <span class="badge ${c.LoaiMon === 'BatBuoc' ? 'badge-required' : 'badge-elective'}">
+                                ${c.LoaiMon === 'BatBuoc' ? 'Bắt buộc' : 'Tự chọn'}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            container.innerHTML += `
+                <div class="semester-block">
+                    <div class="semester-header">
+                        <div class="semester-title">${semester}</div>
+                        <div class="semester-credits">${totalCredits} tín chỉ</div>
+                    </div>
+                    <table class="curriculum-table">
+                        <thead>
+                            <tr>
+                                <th>Mã MH</th>
+                                <th>Tên môn</th>
+                                <th>TC</th>
+                                <th>Loại</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            `;
+        });
+
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = '<div class="loading">Lỗi kết nối server</div>';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadCurriculum);
+</script>
+
+
 </body>
 </html>

@@ -295,25 +295,13 @@
             <!-- FILTER SECTION -->
             <div class="filter-bar">
                 <div class="filter-group">
-                    <label>Năm học:</label>
+                    <label>Học kỳ:</label>
                     <!-- Giữ nguyên ID -->
                     <select id="lich-hocky" class="form-control">
                         <option value="">-- Tất cả --</option>
-                        <option value="2021HK01">2021</option>
-                        <option value="2021HK02">2022</option>
-                        <option value="2022HK01">2023</option>
-                        <option value="2022HK02">2024</option>
-                    </select>
-                </div>
-
-                <div class="filter-group">
-                    <label>Học kỳ:</label>
-                    <!-- Lưu ý: Code gốc bạn gửi có 2 element cùng ID lich-hocky, tôi giữ nguyên để tránh lỗi JS -->
-                    <select id="lich-hocky" class="form-control">
-                        <option value="">-- Tất cả --</option>
-                        <option value="2021HK01">HK01</option>
-                        <option value="2021HK02">HK02</option>
-                        <option value="2022HK01">HK03</option>                 
+                        <option value="2024HK01">Học kỳ 1 (2024-2025)</option>
+                        <option value="2024HK02">Học kỳ 2 (2024-2025)</option>
+                        <option value="2024HK03">Học kỳ 3 (2024-2025)</option>                         
                     </select>
                 </div>
 
@@ -331,7 +319,7 @@
                     </select>
                 </div>
 
-                <button class="btn-search">
+                <button class="btn-search" id="btn-loc-lich">
                     <i class="fas fa-filter"></i> Lọc dữ liệu
                 </button>
             </div>
