@@ -31,6 +31,15 @@ async function loadGVInfo() {
             document.getElementById("gv-sodt").innerText = info.SoDT || "-";
         }
 
+        const statsJson = await gvGet("/giangvien/api/dashboard-stats");
+        if (statsJson.success) {
+            const stats = statsJson.data;
+            // Đổ số liệu vào các Card màu sắc trên Dashboard
+            document.getElementById("stat-total-lhp").innerText = stats.totalLHP;
+            document.getElementById("stat-total-sv").innerText = stats.totalSV;
+            document.getElementById("stat-pending-grades").innerText = stats.pendingGrades;
+        }
+
     } catch (err) {
         console.error("Lỗi loadGVInfo:", err);
     }
@@ -314,28 +323,53 @@ async function loadGVLichDay() {
     const table = document.getElementById("lich-table");
     if (!table) return;
 
-    const json = await gvGet("/giangvien/api/lichday");
-    table.innerHTML = "";
+    // 1. Lấy giá trị từ các ô lọc trong HTML
+    const filterHK = document.getElementById("lich-hocky") ? document.getElementById("lich-hocky").value : "";
+    const filterThu = document.getElementById("lich-thu") ? document.getElementById("lich-thu").value : "";
 
-    if (!json.success || json.data.length === 0) {
-        table.innerHTML = `<tr><td colspan="6" style="text-align:center;">Không có dữ liệu</td></tr>`;
-        return;
+    try {
+        const json = await gvGet("/giangvien/api/lichday");
+        
+        if (!json.success || !Array.isArray(json.data)) {
+            table.innerHTML = `<tr><td colspan="5" style="text-align:center;">Không có dữ liệu lịch dạy</td></tr>`;
+            return;
+        }
+
+        let data = json.data;
+
+        // 2. Thực hiện lọc dữ liệu ngay tại Client
+        if (filterHK !== "") {
+            data = data.filter(r => r.MaHK === filterHK);
+        }
+        if (filterThu !== "") {
+            // Lưu ý: filterThu lấy từ value của <select> là String ("2", "3"...), 
+            // r.Thu thường là Number nên dùng ép kiểu hoặc ==
+            data = data.filter(r => r.Thu == filterThu);
+        }
+
+        // 3. Hiển thị kết quả
+        table.innerHTML = "";
+        if (data.length === 0) {
+            table.innerHTML = `<tr><td colspan="5" style="text-align:center;">Không tìm thấy lịch dạy phù hợp</td></tr>`;
+            return;
+        }
+
+        data.forEach(r => {
+            table.innerHTML += `
+                <tr>
+                    <td>Thứ ${r.Thu}</td>
+                    <td>${r.TietBatDau} - ${r.TietKetThuc}</td>
+                    <td>${r.MaLHP}</td>
+                    <td>${r.TenMH}</td>
+                    <td>${r.MaPhong}</td>                
+                </tr>
+            `;
+        });
+    } catch (e) {
+        console.error("Lỗi fetch lịch dạy:", e);
+        table.innerHTML = `<tr><td colspan="5" style="text-align:center;">Lỗi hệ thống</td></tr>`;
     }
-
-    json.data.forEach(r => {
-        table.innerHTML += `
-            <tr>
-                <td>Thứ ${r.Thu}</td>
-                <td>${r.TietBatDau} - ${r.TietKetThuc}</td>
-                <td>${r.MaLHP}</td>
-                <td>${r.TenMH}</td>
-                <td>${r.MaPhong}</td>
-                
-            </tr>
-        `;
-    });
 }
-
 
 // ========================================
 //  LỊCH HÔM NAY
