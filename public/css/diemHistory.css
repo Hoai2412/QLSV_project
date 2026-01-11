@@ -93,3 +93,68 @@ body{
   background: #111827;
 }
 .badge-gv{ background:#0b3d91; }
+/* ===== FILTER BAR (history) ===== */
+.history-searchbar{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 14px 0 18px;
+}
+
+.history-searchbar input,
+.history-searchbar select{
+  height: 44px;
+  border: 1px solid #dbe2ef;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 14px;
+  outline: none;
+  background: #fff;
+  color: #0f172a;
+}
+
+.history-searchbar input{
+  width: 360px;
+  max-width: 100%;
+}
+
+.history-searchbar select{
+  width: 220px;
+}
+
+.history-searchbar input:focus,
+.history-searchbar select:focus{
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+.history-searchbar button{
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  padding: 0 18px;
+  cursor: pointer;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: .2s;
+}
+
+#btn-his-search{
+  background: #0b3a82;     /* giống tone xanh */
+  color: #fff;
+}
+#btn-his-search:hover{
+  background: #0a2f67;
+}
+
+.history-searchbar .btn-clear{
+  background: #fff;
+  border-color: #dbe2ef;
+  color: #0f172a;
+}
+.history-searchbar .btn-clear:hover{
+  background: #f1f5f9;
+}
